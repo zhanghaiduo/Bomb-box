@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="baishuang">
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+        
+        body {
+            height: 2000px;
+        }
+        
+        div {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            left: calc(50% - 200px);
+            top: calc(50% - 200px);
+            background-color: white;
+            /*position: absolute;*/
+        }
+        
+        div header {
+            position: relative;
+            height: 50px;
+            background-color: red;
+            text-align: center;
+        }
+        
+        div header span {
+            position: relative;
+            height: 50px;
+            background-color: red;
+            line-height: 50px;
+        }
+        
+        div header a {
+            position: absolute;
+            right: 0;
+            background-color: white;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: seagreen;
+            color: wheat;
+            position: fixed;
+            bottom: 0;
+            left: calc(50% - 40px);
+        }
+        
+        button:hover {
+            cursor: pointer;
+        }
+        
+        main {
+            background-color: gray;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <button>点我弹框</button>
+    <main>
+        <div>
+            <header><span>用户的登录</span><a href="javascript:;">X</a></header>
+        </div>
+    </main>
+
+</body>
+
+</html>
+<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $('button').click(function() {
+        $('header').css("cursor", "move")
+        $('main').css('display', 'block')
+        $('body').css('overflow', 'hidden')
+
+    })
+    $('main a').click(function() {
+        $('main').css('display', 'none')
+        $('body').css('overflow', '')
+    })
+
+    $('header').mousedown(function(event) {
+        var x = window.event.clientX
+        var y = window.event.clientY
+        var x1 = $('header').offset().left
+        var y1 = $('header').offset().top
+        var x2 = x - x1
+        var y2 = y - y1
+
+        $(document).mousemove(function(event) {
+            var x3 = window.event.clientX
+            var y3 = window.event.clientY
+            var XX = x3 - x2
+            var YY = y3 - y2
+            if (XX <= 0) {
+                XX = 0;
+            } else if (XX >= $(window).width() - $('div').width() + $(window).scrollLeft()) {
+                XX = $(window).width() - $('div').width() + $(window).scrollLeft();
+            } else if (XX <= $(window).scrollLeft()) {
+                XX = $(window).scrollLeft();
+            }
+            if (YY <= 0) {
+                YY = 0;
+            } else if (YY >= $(window).height() - $('div').height() + $(window).scrollTop()) {
+                YY = $(window).height() - $('div').height() + $(window).scrollTop();
+            } else if (YY <= $(window).scrollTop()) {
+                YY = $(window).scrollTop();
+            }
+            $('main div').css({
+                position: "absolute",
+                left: XX,
+                top: YY
+            })
+        })
+        $(document).mouseup(function(event) {
+            $(document).unbind("mousemove")
+        })
+    })
+</script>
